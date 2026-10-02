@@ -150,13 +150,12 @@ class Lexer:
         reconoce algo, lo consume, emite el token y devuelve ``True``; si no,
         devuelve ``False`` sin consumir nada.
         """
-        if self._current + 1 < len(self._source):
-            two_chars = self._source[self._current : self._current + 2]
-            if two_chars in DOUBLE:
-                self._advance()
-                self._advance()
-                self._add_token(DOUBLE[two_chars])
-                return True
+        two_chars = self._peek() + self._peek_next()
+        if two_chars in DOUBLE:
+            self._advance()
+            self._advance()
+            self._add_token(DOUBLE[two_chars])
+            return True
 
         char = self._peek()
         if char in SINGLE:

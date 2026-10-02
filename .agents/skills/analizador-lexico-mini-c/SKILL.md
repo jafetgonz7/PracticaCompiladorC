@@ -1,17 +1,17 @@
 ---
 name: analizador-lexico-mini-c
-description: Especificación del analizador léxico de Mini-C definida por <Nombre del estudiante>. Úsala cuando debas implementar, probar o corregir el lexer de Mini-C: indica alfabeto, palabras reservadas, patrones por tipo de token, políticas de separación, prioridades y formato de salida.
+description: Especificación del analizador léxico de Mini-C definida por PalicoMocca. Úsala cuando debas implementar, probar o corregir el lexer de Mini-C: indica alfabeto, palabras reservadas, patrones por tipo de token, políticas de separación, prioridades y formato de salida.
 ---
 
 # Analizador léxico de Mini-C
 
-Especificación elaborada por **<Nombre del estudiante>** (grupo <Grupo>) en el Taller N°6 de Lenguajes Formales y Autómatas (UTP-FISC). Implementa el analizador **exactamente** como se describe aquí. Si algo no está definido, pregunta antes de asumir; no inventes tokens, reglas ni excepciones.
+Especificación elaborada por PalicoMocca (grupo 1SF-134) en el Taller N°6 de Lenguajes Formales y Autómatas (UTP-FISC). Implementa el analizador exactamente como se describe aquí. Si algo no está definido, pregunta antes de asumir; no inventes tokens, reglas ni excepciones.
 
 ## 1. Alfabeto Σ
 
 Sensible a mayúsculas. Cualquier carácter fuera de este conjunto es un error léxico.
 
-\t, \n, \r, espacio, `!`, `(`, `)`, `+`, `-`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `;`, `=`, `A`, `B`, `C`, `D`, `E`, `F`, `G`, `H`, `I`, `J`, `K`, `L`, `M`, `N`, `O`, `P`, `Q`, `R`, `S`, `T`, `U`, `V`, `W`, `X`, `Y`, `Z`, `_`, `a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`, `i`, `j`, `k`, `l`, `m`, `n`, `o`, `p`, `q`, `r`, `s`, `t`, `u`, `v`, `w`, `x`, `y`, `z`, `{`, `}`
+espacio, `!`, `(`, `)`, `+`, `-`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `;`, `=`, `A`, `B`, `C`, `D`, `E`, `F`, `G`, `H`, `I`, `J`, `K`, `L`, `M`, `N`, `O`, `P`, `Q`, `R`, `S`, `T`, `U`, `V`, `W`, `X`, `Y`, `Z`, `_`, `a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`, `i`, `j`, `k`, `l`, `m`, `n`, `o`, `p`, `q`, `r`, `s`, `t`, `u`, `v`, `w`, `x`, `y`, `z`, `{`, `}`
 
 ## 2. Palabras reservadas
 
@@ -26,21 +26,21 @@ Notación: `"abc"` literal · `[a-z]` clase · `|` unión · `*` cero o más · 
 
 | Tipo de token | Patrón |
 |---|---|
+| `ASSIGN` | `"="` |
+| `EOF` | `""` |
+| `EQUAL_EQUAL` | `"=="` |
 | `KW_INT` | `"int"` |
 | `KW_WHILE` | `"while"` |
-| `IDENTIFIER` | `[A-Za-z_][A-Za-z0-9_]*` |
-| `INTEGER_LITERAL` | `[0-9]#` |
-| `ASSIGN` | `"="` |
-| `PLUS` | `"+"` |
-| `MINUS` | `"-"` |
-| `EQUAL_EQUAL` | `"=="` |
-| `NOT_EQUAL` | `"!="` |
-| `LPAREN` | `"("` |
-| `RPAREN` | `")"` |
 | `LBRACE` | `"{"` |
 | `RBRACE` | `"}"` |
+| `LPAREN` | `"("` |
+| `RPAREN` | `")"` |
+| `NOT_EQUAL` | `"!="` |
+| `PLUS` | `"+"` |
+| `MINUS` | `"-"` |
+| `INTEGER_LITERAL` | `[0-9]#` |
 | `SEMICOLON` | `";"` |
-| `EOF` | `""` |
+| `IDENTIFIER` | `[A-Za-z_][A-Za-z0-9_]*` |
 
 No existen otros tipos de token.
 
@@ -60,7 +60,7 @@ No existen otros tipos de token.
 - Grupo 1 (de mayor a menor prioridad): `KW_INT` = `KW_WHILE` > `IDENTIFIER`
 - Grupo 2 (de mayor a menor prioridad): `EQUAL_EQUAL` > `ASSIGN`
 
-Sin conflicto de prioridad: `INTEGER_LITERAL`, `PLUS`, `MINUS`, `NOT_EQUAL`, `LPAREN`, `RPAREN`, `LBRACE`, `RBRACE`, `SEMICOLON`, `EOF`.
+Sin conflicto de prioridad: `INTEGER_LITERAL`, `LPAREN`, `RPAREN`, `RBRACE`, `LBRACE`, `SEMICOLON`, `PLUS`, `MINUS`, `NOT_EQUAL`, `EOF`.
 
 ## 6. Estructura del token y diagnósticos
 
@@ -70,7 +70,7 @@ Diagnostic(code, severity, message, line, column)
 ```
 
 - `literal`: valor `int` solo para literales enteros (`"007"` → `7`); `None` en los demás.
-- `line` y `column`: posición donde **empieza** el lexema, desde 1. Solo `\n` abre nueva línea.
+- `line` y `column`: posición donde empieza el lexema, desde 1. Solo `\n` abre nueva línea.
 - Error léxico: `Diagnostic("LEX001", "error", "Carácter no reconocido: '<c>'", línea, columna)`.
 - Salida en terminal: `TIPO 'lexema' línea columna`, un token por línea.
 
@@ -84,7 +84,7 @@ whilex == -5
 
 Salida esperada según la especificación del estudiante:
 ```text
-IDENTIFIER 'int2' 1 1
+IDENTIFIER 'int2' 1 1 
 ASSIGN '=' 1 6
 INTEGER_LITERAL '12' 1 8
 IDENTIFIER 'abc' 1 10
